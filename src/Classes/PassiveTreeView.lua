@@ -1615,7 +1615,8 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 				local skill = data.skills[mod.value.skillId]
 				if skill then
 					local gem = data.gems[data.gemForSkill[skill]]
-					local options = { }
+					---@type GemToolTipOptions
+					local options = { skipAcquisition = true }
 					if not gem then
 						gem = { grantedEffect = skill, tags = { } }
 						options.skipRequirements = true

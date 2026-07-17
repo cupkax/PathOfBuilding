@@ -4779,7 +4779,7 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode, maxWidth)
 				local gem = data.gems[gemId]
 				-- if the skill has no matching gem, make up one. it will lack some information, but should still display somewhat correctly
 				---@type GemToolTipOptions
-				local options = {}
+				local options = { skipAcquisition = true }
 				if not gem then
 					gem = { grantedEffect = skill, tags = {} }
 					options.skipRequirements = true

@@ -23,6 +23,43 @@ local reservationMap = {
 ---@param tooltip Tooltip
 ---@param build Build
 ---@param gemInstance any
+---@param options GemToolTipOptions
+local function addGemAcquisitionInfo(tooltip, build, gemInstance, options)
+	-- skills granted by items or the tree aren't bought from a vendor
+	if options.skipAcquisition or not (build.skillsTab and build.skillsTab.showAcquisitionSource) then
+		return
+	end
+	local info = data.gemAcquisitionSources and (
+		data.gemAcquisitionSources[gemInstance.gemData.name] or
+		data.gemAcquisitionSources[gemInstance.gemId]
+	)
+	if not info then
+		return
+	end
+	local className = build.spec and build.spec.curClassName
+	local location = string.format("%s (Act %s)", info.npc or "?", tostring(info.act or "?"))
+	local color, text
+	if info.reward == "all" or (type(info.reward) == "table" and info.reward[className]) then
+		color = colorCodes.POSITIVE
+		text = string.format("Quest reward from %s after %s", location, info.quest or "the quest")
+	elseif info.vendor == nil or info.vendor == "all" or (type(info.vendor) == "table" and info.vendor[className]) then
+		color = colorCodes.CRAFTED
+		text = string.format("Buy from %s after %s", location, info.quest or "the quest")
+	elseif (tonumber(info.act) or 0) <= 3 then
+		color = colorCodes.CRAFTED
+		text = "Buy from Siosa (Act 3) after A Fixture of Fate"
+	else
+		color = colorCodes.CRAFTED
+		text = "Buy from Lilly Roth (Act 6) after Fallen from Grace"
+	end
+	local fontSizeBig = getFontSizes()
+	tooltip:AddSeparator(6)
+	tooltip:AddLine(fontSizeBig, color .. text, "FONTIN SC")
+end
+
+---@param tooltip Tooltip
+---@param build Build
+---@param gemInstance any
 ---@param grantedEffect any
 ---@param addLevel boolean
 ---@param addReq boolean
@@ -206,6 +243,7 @@ end
 
 ---@class GemToolTipOptions
 ---@field skipRequirements? boolean
+---@field skipAcquisition? boolean
 ---@param tooltip Tooltip
 ---@param build Build
 ---@param gemInstance any
@@ -229,6 +267,7 @@ function GemTooltip.AddGemTooltip(tooltip, build, gemInstance, options)
 		tooltip:AddLine(fontSizeTitle, colorCodes.GEM .. grantedEffect.name, "FONTIN SC")
 		tooltip:AddSeparator(10)
 		tooltip:AddLine(fontSizeBig, "^x7F7F7F" .. gemInstance.gemData.tagString, "FONTIN SC")
+		addGemAcquisitionInfo(tooltip, build, gemInstance, options)
 		addCommonGemInfo(tooltip, build, gemInstance, grantedEffect, true, not skipRequirements)
 		tooltip:AddSeparator(10)
 		tooltip:AddLine(fontSizeTitle,
@@ -247,6 +286,7 @@ function GemTooltip.AddGemTooltip(tooltip, build, gemInstance, options)
 		if gemInstance.gemData.tagString then
 			tooltip:AddLine(fontSizeBig, "^x7F7F7F" .. gemInstance.gemData.tagString, "FONTIN SC")
 		end
+		addGemAcquisitionInfo(tooltip, build, gemInstance, options)
 		addCommonGemInfo(tooltip, build, gemInstance, grantedEffect, true, not skipRequirements,
 			secondary and secondary.support and secondary)
 	end
