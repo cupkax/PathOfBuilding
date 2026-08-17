@@ -721,7 +721,7 @@ return {
 		npc = "Yeena",
 		vendor = { Marauder = true, Duelist = true, Templar = true, Scion = true },
 	},
-	["Dark Pact"] = {
+	["Dark Bargain"] = {
 		act = 3,
 		quest = "A Fixture of Fate",
 		npc = "Siosa",
@@ -1066,14 +1066,14 @@ return {
 		quest = "The Caged Brute",
 		npc = "Nessa",
 		reward = { Marauder = true, Duelist = true, Ranger = true, Shadow = true, Scion = true },
-		vendor = { Marauder = true, Duelist = true, Ranger = true, Shadow = true, Scion = true },
+		vendor = "all",
 	},
 	["Faster Casting"] = {
 		act = 2,
 		quest = "Sharp and Cruel",
 		npc = "Yeena",
 		reward = { Shadow = true, Witch = true, Templar = true, Scion = true },
-		vendor = { Shadow = true, Witch = true, Templar = true, Scion = true },
+		vendor = "all",
 	},
 	["Faster Projectiles"] = {
 		act = 3,
@@ -1882,6 +1882,13 @@ return {
 		quest = "A Fixture of Fate",
 		npc = "Siosa",
 		vendor = "all",
+	},
+	["Mana-Infused Staff"] = {
+		act = 2,
+		quest = "Intruders in Black",
+		npc = "Yeena",
+		reward = { Templar = true },
+		vendor = { Shadow = true, Witch = true, Templar = true },
 	},
 	["Manabond"] = {
 		act = 1,
@@ -2983,7 +2990,9 @@ return {
 	["Volcanic Fissure"] = {
 		act = 1,
 		quest = "The Siren's Cadence",
+		npc = "Nessa",
 		reward = { Marauder = true, Duelist = true },
+		vendor = { Marauder = true, Duelist = true, Templar = true, Scion = true },
 	},
 	["Volley"] = {
 		act = 1,
